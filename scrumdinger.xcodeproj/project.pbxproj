@@ -47,11 +47,21 @@
 			);
 			target = 6A3A90782F5E986300CCF257 /* ShareExtension */;
 		};
+		6A72E14D2F61712A00695298 /* Exceptions for "scrumdinger" folder in "scrumdinger" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 6A3A90662F5E968300CCF257 /* scrumdinger */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		6A3A90692F5E968300CCF257 /* scrumdinger */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				6A72E14D2F61712A00695298 /* Exceptions for "scrumdinger" folder in "scrumdinger" target */,
+			);
 			path = scrumdinger;
 			sourceTree = "<group>";
 		};
@@ -361,6 +371,7 @@
 				DEVELOPMENT_TEAM = U86CW5T364;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = scrumdinger/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -390,6 +401,7 @@
 				DEVELOPMENT_TEAM = U86CW5T364;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = scrumdinger/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

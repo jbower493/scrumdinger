@@ -1,27 +1,22 @@
 import SwiftUI
 
 struct ShareExtensionView: View {
-    @State private var text: String
+    let text: String
+    let onOpenApp: () -> Void
     
-    init(text: String) {
-        self.text = text
-    }
+//    init(text: String) {
+//        self.text = text
+//    }
     
     var body: some View {
         NavigationStack{
             VStack(spacing: 20){
-                TextField("Text", text: $text, axis: .vertical)
-                    .lineLimit(3...6)
-                    .textFieldStyle(.roundedBorder)
-                
-                Button {
-                    // TODO: save text
-                    close()
-                } label: {
-                    Text("Save")
-                        .frame(maxWidth: .infinity)
+                Text("Shared text:")
+                Text(text)
+
+                Button("Open Scrumdinger") {
+                    onOpenApp()
                 }
-                .buttonStyle(.borderedProminent)
                 
                 Spacer()
             }

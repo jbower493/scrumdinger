@@ -40,8 +40,27 @@ class ShareViewController: UIViewController {
                 provider.loadItem(forTypeIdentifier: "public.text", options: nil) { item, _ in
                     if let text = item as? String {
                         self.save(type: "text", value: text)
-                        self.openHostApp()
-                        self.completeRequest()
+//                        self.openHostApp()
+//                        self.completeRequest()
+                        
+                        DispatchQueue.main.async {
+                            // host the SwiftU view
+                            let contentView = UIHostingController(rootView: ShareExtensionView(
+                                text: text,
+                                onOpenApp: { [weak self] in
+                                    self?.openHostApp()
+                                }
+                            ))
+                            self.addChild(contentView)
+                            self.view.addSubview(contentView.view)
+                            
+                            // set up constraints
+                            contentView.view.translatesAutoresizingMaskIntoConstraints = false
+                            contentView.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+                            contentView.view.bottomAnchor.constraint (equalTo: self.view.bottomAnchor).isActive = true
+                            contentView.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+                            contentView.view.rightAnchor.constraint (equalTo: self.view.rightAnchor).isActive = true
+                        }
                     }
                 }
                 return
@@ -58,25 +77,35 @@ class ShareViewController: UIViewController {
         }
     }
     
-    internal func openHostApp() {
-        let urlScheme = "scrumdinger://share"
-        
-        let url = URL(string: urlScheme)
-//        let selectorOpenURL = sel_registerName("openURL:")
-//        var responder: UIResponder? = self
+//    internal func openHostApp() {
+//        let urlScheme = "scrumdinger://share"
 //        
-//        while responder != nil {
-//          if responder?.responds(to: selectorOpenURL) == true {
-//            responder?.perform(selectorOpenURL, with: url)
-//          }
-//          responder = responder!.next
+//        let url = URL(string: urlScheme)
+////        let selectorOpenURL = sel_registerName("openURL:")
+////        var responder: UIResponder? = self
+////        
+////        while responder != nil {
+////          if responder?.responds(to: selectorOpenURL) == true {
+////            responder?.perform(selectorOpenURL, with: url)
+////          }
+////          responder = responder!.next
+////        }
+//        
+////        completeRequest()
+//        if (url != nil) {
+//            self.extensionContext?.open(url!, completionHandler: nil)
 //        }
-        
-//        completeRequest()
-        if (url != nil) {
-            self.extensionContext?.open(url!, completionHandler: nil)
+//        
+//    }
+    
+    func openHostApp() {
+        guard let url = URL(string: "scrumdinger://share") else { return }
+
+        extensionContext?.open(url)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.extensionContext?.completeRequest(returningItems: nil)
         }
-        
     }
       
   func completeRequest() {
