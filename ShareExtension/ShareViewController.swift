@@ -99,17 +99,30 @@ class ShareViewController: UIViewController {
 //    }
     
     func openHostApp() {
-        guard let url = URL(string: "scrumdinger://share") else { return }
-
-        extensionContext?.open(url)
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            self.extensionContext?.completeRequest(returningItems: nil)
+        let urlScheme = "scrumdinger://share"
+        
+        guard let url = URL(string: urlScheme) else { return }
+        self.openURL(url)
+    }
+    
+    @objc @discardableResult private func openURL(_ url: URL) -> Bool {
+        var responder: UIResponder? = self
+        while responder != nil {
+            if let application = responder as? UIApplication {
+                if #available(iOS 18.0, *) {
+                    application.open(url, options: [:], completionHandler: nil)
+                    return true
+                } else {
+                    return application.perform(#selector(openURL(_:)), with: url) != nil
+                }
+            }
+            responder = responder?.next
         }
+        return false
     }
       
   func completeRequest() {
     // Inform the host that we're done, so it un-blocks its UI. Note: Alternatively you could call super's -didSelectPost, which will similarly complete the extension context.
-//    extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+    extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
   }
 }
