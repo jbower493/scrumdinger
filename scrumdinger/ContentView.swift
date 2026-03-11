@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct ContentView: View {
+    init() {
+        print("mate") // works here
+    }
+    
     var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -17,8 +21,4 @@ struct ContentView: View {
         }
         .padding()
     }
-}
-
-#Preview {
-    ContentView()
 }

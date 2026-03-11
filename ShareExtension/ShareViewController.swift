@@ -3,64 +3,84 @@ import UIKit
 import UniformTypeIdentifiers
 
 class ShareViewController: UIViewController {
+    let appGroup = "group.com.scrumdingerJbower"
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        handleShare()
         
-        // Ensure access to extensionItem and itemProvider
+        print("kenny")
+    }
+
+    func handleShare() {
+        print("handle share")
+        
         guard
             let extensionItem = extensionContext?.inputItems.first as? NSExtensionItem,
-            let itemProvider = extensionItem.attachments?.first else {
-            close()
+            let attachments = extensionItem.attachments
+        else {
+            completeRequest()
             return
         }
-        
-        // Check type identifier
-        let textDataType = UTType.plainText.identifier
-        if itemProvider.hasItemConformingToTypeIdentifier(textDataType) {
 
-            // Load the item from itemProvider
-            itemProvider.loadItem(forTypeIdentifier: textDataType , options: nil) { (providedText, error) in
-                  if let error {
-                      self.close()
-                      return
-                  }
-                
-                if let text = providedText as? String {
-                    DispatchQueue.main.async {
-                        // host the SwiftU view
-                        let contentView = UIHostingController(rootView: ShareExtensionView(text: text))
-                        self.addChild(contentView)
-                        self.view.addSubview(contentView.view)
-                        
-                        // set up constraints
-                        contentView.view.translatesAutoresizingMaskIntoConstraints = false
-                        contentView.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-                        contentView.view.bottomAnchor.constraint (equalTo: self.view.bottomAnchor).isActive = true
-                        contentView.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-                        contentView.view.rightAnchor.constraint (equalTo: self.view.rightAnchor).isActive = true
+        for provider in attachments {
+
+            if provider.hasItemConformingToTypeIdentifier("public.url") {
+                provider.loadItem(forTypeIdentifier: "public.url", options: nil) { item, _ in
+                    if let url = item as? URL {
+                        self.save(type: "url", value: url.absoluteString)
+                        self.openHostApp()
+                        self.completeRequest()
                     }
-                } else {
-                    self.close()
-                    return
                 }
-                
+                return
             }
 
-        } else {
-            close()
-            return
-        }
-       
-        NotificationCenter.default.addObserver(forName: NSNotification.Name("close"), object: nil, queue: nil) { _ in
-            DispatchQueue.main.async {
-                self.close()
+            if provider.hasItemConformingToTypeIdentifier("public.text") {
+                provider.loadItem(forTypeIdentifier: "public.text", options: nil) { item, _ in
+                    if let text = item as? String {
+                        self.save(type: "text", value: text)
+                        self.openHostApp()
+                        self.completeRequest()
+                    }
+                }
+                return
             }
+        }
+
+        self.completeRequest()
+    }
+    
+    func save(type: String, value: String) {
+        if let defaults = UserDefaults(suiteName: appGroup) {
+            defaults.set(type, forKey: "shared_type")
+            defaults.set(value, forKey: "shared_value")
         }
     }
     
-    /// Close the Share Extension
-    func close() {
-        self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
+    internal func openHostApp() {
+        let urlScheme = "scrumdinger://share"
+        
+        let url = URL(string: urlScheme)
+//        let selectorOpenURL = sel_registerName("openURL:")
+//        var responder: UIResponder? = self
+//        
+//        while responder != nil {
+//          if responder?.responds(to: selectorOpenURL) == true {
+//            responder?.perform(selectorOpenURL, with: url)
+//          }
+//          responder = responder!.next
+//        }
+        
+//        completeRequest()
+        if (url != nil) {
+            self.extensionContext?.open(url!, completionHandler: nil)
+        }
+        
     }
+      
+  func completeRequest() {
+    // Inform the host that we're done, so it un-blocks its UI. Note: Alternatively you could call super's -didSelectPost, which will similarly complete the extension context.
+//    extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
+  }
 }
