@@ -3,10 +3,7 @@ import SwiftUI
 struct ShareExtensionView: View {
     let text: String
     let onOpenApp: () -> Void
-    
-//    init(text: String) {
-//        self.text = text
-//    }
+    let onCancel: () -> Void
     
     var body: some View {
         NavigationStack{
@@ -24,13 +21,9 @@ struct ShareExtensionView: View {
             .navigationTitle("Share Extension")
             .toolbar {
                 Button("Cancel") {
-                    close()
+                    onCancel()
                 }
             }
         }
-    }
-
-    func close() {
-        NotificationCenter.default.post(name: NSNotification.Name("close"), object: nil)
     }
 }

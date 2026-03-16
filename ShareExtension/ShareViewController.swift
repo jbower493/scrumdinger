@@ -49,17 +49,20 @@ class ShareViewController: UIViewController {
                                 text: text,
                                 onOpenApp: { [weak self] in
                                     self?.openHostApp()
+                                },
+                                onCancel: { [weak self] in
+                                    self?.completeRequest()
                                 }
                             ))
                             self.addChild(contentView)
                             self.view.addSubview(contentView.view)
                             
                             // set up constraints
-//                            contentView.view.translatesAutoresizingMaskIntoConstraints = false
-//                            contentView.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-//                            contentView.view.bottomAnchor.constraint (equalTo: self.view.bottomAnchor).isActive = true
-//                            contentView.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-//                            contentView.view.rightAnchor.constraint (equalTo: self.view.rightAnchor).isActive = true
+                            contentView.view.translatesAutoresizingMaskIntoConstraints = false
+                            contentView.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+                            contentView.view.bottomAnchor.constraint (equalTo: self.view.bottomAnchor).isActive = true
+                            contentView.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+                            contentView.view.rightAnchor.constraint (equalTo: self.view.rightAnchor).isActive = true
                         }
                     }
                 }
