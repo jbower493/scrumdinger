@@ -55,11 +55,11 @@ class ShareViewController: UIViewController {
                             self.view.addSubview(contentView.view)
                             
                             // set up constraints
-                            contentView.view.translatesAutoresizingMaskIntoConstraints = false
-                            contentView.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-                            contentView.view.bottomAnchor.constraint (equalTo: self.view.bottomAnchor).isActive = true
-                            contentView.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-                            contentView.view.rightAnchor.constraint (equalTo: self.view.rightAnchor).isActive = true
+//                            contentView.view.translatesAutoresizingMaskIntoConstraints = false
+//                            contentView.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+//                            contentView.view.bottomAnchor.constraint (equalTo: self.view.bottomAnchor).isActive = true
+//                            contentView.view.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+//                            contentView.view.rightAnchor.constraint (equalTo: self.view.rightAnchor).isActive = true
                         }
                     }
                 }
@@ -76,27 +76,6 @@ class ShareViewController: UIViewController {
             defaults.set(value, forKey: "shared_value")
         }
     }
-    
-//    internal func openHostApp() {
-//        let urlScheme = "scrumdinger://share"
-//        
-//        let url = URL(string: urlScheme)
-////        let selectorOpenURL = sel_registerName("openURL:")
-////        var responder: UIResponder? = self
-////        
-////        while responder != nil {
-////          if responder?.responds(to: selectorOpenURL) == true {
-////            responder?.perform(selectorOpenURL, with: url)
-////          }
-////          responder = responder!.next
-////        }
-//        
-////        completeRequest()
-//        if (url != nil) {
-//            self.extensionContext?.open(url!, completionHandler: nil)
-//        }
-//        
-//    }
     
     func openHostApp() {
         let urlScheme = "scrumdinger://share"
